@@ -1,24 +1,25 @@
 import discord
 from discord.ext import commands
-from discord import app_commands
 
-class Status(commands.Cog):
+class StatusCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(name="status", description="Check server status")
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print("✅ StatusCog is ready.")
+
+    @discord.app_commands.command(name="status", description="Check server status")
     async def status(self, interaction: discord.Interaction):
-        await interaction.response.send_message("✅ Server is running smoothly!", ephemeral=True)
+        await interaction.response.send_message("✅ Server is running smoothly!")
 
-    @app_commands.command(name="analyze", description="Analyze system metrics")
+    @discord.app_commands.command(name="analyze", description="Analyze server performance")
     async def analyze(self, interaction: discord.Interaction):
-        # Replace this with actual system metrics logic
-        await interaction.response.send_message("📊 Analyzing cluster metrics... CPU: 45%, Memory: 65%, Network: Good.", ephemeral=True)
+        await interaction.response.send_message("🔎 Analyzing server metrics...")
 
-    @app_commands.command(name="recommend", description="AI-based recommendation")
+    @discord.app_commands.command(name="recommend", description="Recommend action based on server status")
     async def recommend(self, interaction: discord.Interaction):
-        # Replace with actual AI logic
-        await interaction.response.send_message("🤖 Recommendation: Scale database pods to 4 replicas to handle traffic spike.", ephemeral=True)
+        await interaction.response.send_message("🧠 Recommendation: All systems nominal!")
 
 async def setup(bot):
-    await bot.add_cog(Status(bot))
+    await bot.add_cog(StatusCog(bot))

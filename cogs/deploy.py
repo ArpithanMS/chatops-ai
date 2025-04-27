@@ -1,23 +1,21 @@
 import discord
 from discord.ext import commands
-from discord import app_commands
 
-class Deploy(commands.Cog):
+class DeployCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # /deploy command
-    @app_commands.command(name="deploy", description="Deploy the application")
-    async def deploy(self, interaction: discord.Interaction):
-        # Simulate the deploy process
-        await interaction.response.send_message("🚀 Deploying application... Deployment completed!", ephemeral=True)
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print("✅ DeployCog is ready.")
 
-    # /restart command
-    @app_commands.command(name="restart", description="Restart a service")
-    async def restart(self, interaction: discord.Interaction):
-        # Simulate restarting a service
-        await interaction.response.send_message("♻️ Restarting the service... Restart complete!", ephemeral=True)
+    @discord.app_commands.command(name="deploy", description="Deploy an application")
+    async def deploy(self, interaction: discord.Interaction, app_name: str):
+        await interaction.response.send_message(f"🚀 Deploying application: {app_name}...")
 
-# Cog setup
+    @discord.app_commands.command(name="restart", description="Restart a service")
+    async def restart(self, interaction: discord.Interaction, service_name: str):
+        await interaction.response.send_message(f"♻️ Restarting service: {service_name}...")
+
 async def setup(bot):
-    await bot.add_cog(Deploy(bot))
+    await bot.add_cog(DeployCog(bot))
